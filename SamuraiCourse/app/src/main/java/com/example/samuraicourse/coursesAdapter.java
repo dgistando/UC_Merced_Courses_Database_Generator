@@ -12,7 +12,7 @@ import android.widget.CheckBox;
 /**
  * Created by dgist on 4/2/2016.
  */
-public class coursesAdapter extends ArrayAdapter<courses>{
+public class coursesAdapter extends ArrayAdapter<coursess>{
     Context mcontext;
 
     int layoutId;
@@ -28,7 +28,7 @@ public class coursesAdapter extends ArrayAdapter<courses>{
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
 
-        final courses currentItem = getItem(position);
+        final coursess currentItem = getItem(position);
 
         if (row == null) {
             LayoutInflater inflater = ((Activity) mcontext).getLayoutInflater();

@@ -64,7 +64,7 @@ public class ToDoActivity extends Activity {
      * Mobile Service Table used to access data
      */
     private MobileServiceTable<ToDoItem> mToDoTable;
-    private MobileServiceTable<courses> mcoursesTable;
+    private MobileServiceTable<coursess> mcoursesTable;
 
     //Offline Sync
     /**
@@ -123,7 +123,7 @@ public class ToDoActivity extends Activity {
 
             // Get the Mobile Service Table instance to use
 
-            mcoursesTable = mClient.getTable(courses.class);
+            mcoursesTable = mClient.getTable("coursess",coursess.class);
 
 
             // Offline Sync
@@ -193,7 +193,7 @@ public class ToDoActivity extends Activity {
      * @param item
      *            The item to mark
      */
-    public void checkItem(final courses item) {
+    public void checkItem(final coursess item) {
         if (mClient == null) {
             return;
         }
@@ -233,7 +233,7 @@ public class ToDoActivity extends Activity {
      * @param item
      *            The item to mark
      */
-    public void checkItemInTable(courses item) throws ExecutionException, InterruptedException {
+    public void checkItemInTable(coursess item) throws ExecutionException, InterruptedException {
         //mToDoTable.update(item).get();
     }
 
@@ -249,7 +249,7 @@ public class ToDoActivity extends Activity {
         }
 
         // Create a new item
-        final courses item = new courses();
+        final coursess item = new coursess();
 
         item.setCrn(Integer.parseInt(mTextNewToDo.getText().toString()));
 
@@ -259,7 +259,7 @@ public class ToDoActivity extends Activity {
             @Override
             protected Void doInBackground(Void... params) {
                 try {
-                    final courses entity = addItemInTable(item);
+                    final coursess entity = addItemInTable(item);
 
                     runOnUiThread(new Runnable() {
                         @Override
@@ -287,8 +287,8 @@ public class ToDoActivity extends Activity {
      * @param item
      *            The item to Add
      */
-    public courses addItemInTable(courses item) throws ExecutionException, InterruptedException {
-        courses entity = mcoursesTable.where().field("crn").eq(item.getCrn()).execute().get().get(1);
+    public coursess addItemInTable(coursess item) throws ExecutionException, InterruptedException {
+        coursess entity = mcoursesTable.where().field("crn").eq(item.getCrn()).execute().get().get(0);
         return entity;
     }
 
@@ -380,7 +380,7 @@ public class ToDoActivity extends Activity {
                     tableDefinition.put("days", ColumnDataType.String);
                     tableDefinition.put("room", ColumnDataType.String);
 
-                    localStore.defineTable("courses", tableDefinition);
+                    localStore.defineTable("coursess", tableDefinition);
                     SimpleSyncHandler handler = new SimpleSyncHandler();
 
                     syncContext.initialize(localStore, handler).get();

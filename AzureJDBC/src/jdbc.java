@@ -17,9 +17,19 @@ public class jdbc {
 				+ "encrypt=true;"
 				+ "trustServerCertificate=false;"
 				+ "hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
-		//static final String USERNAME = "root";
-		//static final String PASSWORD = "samurai#2016";
 		
+	/**
+	 * This method add creates a scrape object and calls it to get all the info.
+	 * Then it takes that data and either creates tables, inserts into table,deletes table,
+	 * or updates table. The current program returns crn and course title(number) from the database
+	 * given a crn. 
+	 * 
+	 * In order to make connections, you do need to have authorization from the server firewall.
+	 * 
+	 * 
+	 * @param args
+	 * @return void
+	 */
 	public static void main(String[] args){
 		
 		Scrape scrape = new Scrape();
@@ -36,22 +46,11 @@ public class jdbc {
 			scrape.getPage();
 			scrape.parsePage();
 
-			//CreateTables();
-			InsertIntoCourses();
+			//InsertIntoCourses();
 			//UpdateCourses();
 
-			//sql = "DELETE FROM Courses WHERE crn = 33985";
-			
-			/*  sql = "SELECT id,number,crn FROM coursess;";
-			  rs = stat.executeQuery(sql);
-			  for(int i=0; i < 10; i++){
-				  rs.next();
-				  System.out.println(rs.getString(1)+" :: "+rs.getString(2)+" :: "+rs.getString(3));
-			  }*/
-			//sql = "UPDATE Courses SET seatsAvailable = 10 WHERE seatsAvailable = 5";
-			//sql = "DROP TABLE courses;";
-			//stat.executeUpdate(sql);
-			/*Scanner in  = new Scanner(System.in);
+
+			Scanner in  = new Scanner(System.in);
 			System.out.println("Input CRN in correct format:");
 			String st = in.next();
 			while(!st.equals("-1")){
@@ -64,7 +63,7 @@ public class jdbc {
 				
 			System.out.println("\nInput CRN in correct format.(-1 to Stop.)");	
 			st = in.next();
-			}*/
+			}
 			
 			conn.close();
 			
@@ -80,14 +79,20 @@ public class jdbc {
 			
 	}
 	
+	/**
+	 * This method firsts checks to see if the tables exist in the database already.
+	 * If the table doesnt already exist, this method will create it.
+	 * 
+	 * @return void
+	 */
 	public static void CreateTables(){
 		
 		try{
 			stat = conn.createStatement();
 			
-			DatabaseMetaData dm = conn.getMetaData();//change beck to courses
+			DatabaseMetaData dm = conn.getMetaData();
 			ResultSet rs = dm.getTables(null, null, "courses", null);
-			if(!rs.next()){//"int", and no size
+			if(!rs.next()){
 				System.out.println("Creating courses table...");
 				sql = "CREATE TABLE courses ("
 						+ "crn int PRIMARY KEY NOT NULL,"
@@ -156,6 +161,13 @@ public class jdbc {
 		
 	}
 	
+	/**
+	 * This method sorts the output.txt file from the parser class and inserts into
+	 * courses table. Since we need all the crn's to be unique it add crn's for the
+	 * discussions and labs that dont have them.
+	 * 
+	 * @return void
+	 */
 	public static void InsertIntoCourses(){
 		int COMB_CRN = 0;
 		String pad = String.format("%%0%dd", 2);
@@ -191,7 +203,7 @@ public class jdbc {
 							CRN = lines.next();
 							COMB_CRN = Integer.parseInt(CRN + result);
 						}else{
-							//for more that 10 DISC's in a row.
+							//for more than 10 DISC's in a row.
 							CRN = "" + (++COMB_CRN);
 						}
 						//System.out.println("crn = " + "00" + " and CRN = " + CRN);
@@ -257,7 +269,6 @@ public class jdbc {
 				SEM_ID = "1";
 				System.out.println(line);
 				
-								//back to courses
 				sql = "INSERT INTO courses(crn,number,title,units,activity,days,time,room,length,instructor,maxEnrl,seatsAvailable,activeEnrl,sem_id) VALUES('"+CRN+"',"
 						+ "'"+NUMBER+"',"
 						+ "'"+TITLE+"',"
@@ -284,6 +295,12 @@ public class jdbc {
 		
 	}
 
+	/**
+	 * This method updates the Active Enrollment and Seats Available sections of the 
+	 * courses table.
+	 * 
+	 * @retrun void
+	 */
 	public static void UpdateCourses(){
 		int COMB_CRN = 0;
 		String pad = String.format("%%0%dd", 2);
@@ -388,7 +405,18 @@ public class jdbc {
 		}
 	}
 	
-	public static void SelectCoursesCSE(){
-		
+	/**
+	 * Drops the courses table from the database
+	 */
+	public static void DropCourses(){
+		try{
+			stat = conn.createStatement();
+			sql = "DROP TABLE courses;";
+			stat.executeUpdate(sql);
+			
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
 	}
+	
 }

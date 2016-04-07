@@ -16,10 +16,23 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.gargoylesoftware.htmlunit.javascript.host.dom.Text;
 
+
+/**
+ * A class to Scrape and Parse the data from the UCM website. 
+ */
 public class Scrape {
 	
 	Scrape(){}
 	
+	/**
+	 * Automates the process of opening a browser, going to the UCM website
+	 * and downloading the page as html.
+	 * <p>
+	 * This method works specifically for the UCM website, assuming it still 
+	 * exists and is valid. 
+	 *
+	 * @return void
+	 */
     protected void getPage() {
 
     	try {
@@ -47,6 +60,17 @@ public class Scrape {
     	}
 	}
     
+	/**
+	 * Opens the html document from UCM, and parses the data appropriately,  
+	 * saving to a new text file. 
+	 * <p>
+	 * This method disregards unnecessary information, separating only the 
+	 * useful information by semi-colons to be easy to import into a database.
+	 * Just like Scrape(), this method assumes that the html was successfully retrieved
+	 * from the UCM website. 
+	 *
+	 * @return void
+	 */
     protected void parsePage() {
 
     	try {

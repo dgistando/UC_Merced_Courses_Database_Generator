@@ -2,6 +2,7 @@ package com.example.samuraicourse;
 
 public class courses {
     /**
+     * Item id
      * Item crn
      * Item number
      * Item title
@@ -17,6 +18,8 @@ public class courses {
      * Item activeEnrl
      * Item sem_id
      */
+    @com.google.gson.annotations.SerializedName("id")
+    private String mId;
     @com.google.gson.annotations.SerializedName("id")
     private int crn;
     @com.google.gson.annotations.SerializedName("number")
@@ -47,6 +50,7 @@ public class courses {
     private int sem_id;
 
     public courses() {
+        this.setId(mId);
         this.setCrn(crn);
         this.setNumber(number);
         this.setTitle(title);
@@ -62,6 +66,8 @@ public class courses {
         this.setActiveEnrl(activeEnrl);
         this.setSem_id(1);
     }
+
+    public String getId(){return mId;}
 
     public int getCrn() {
         return crn;
@@ -118,6 +124,9 @@ public class courses {
     public int getSem_id() {
         return sem_id;
     }
+
+
+    public void setId(String id){mId = id;}
 
     public void setCrn(int crn) {
         this.crn = crn;

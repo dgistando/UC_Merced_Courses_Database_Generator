@@ -10,15 +10,15 @@ public class jdbc {
 		static ResultSet rs;	
 		
 		static final String JDBC_DRIVER = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-		static final String DB_URL = "jdbc:sqlserver://testserver1212.database.windows.net:1433;"
-				+ "database=Test;"
-				+ "user=dgist@testserver1212;"
+		static final String DB_URL = "jdbc:sqlserver://samuraicourses.database.windows.net:1433;"
+				+ "database=UC_Merced_Courses;"
+				+ "user=ninjamob@samuraicourses;"
 				+ "password=samurai#2016;"
 				+ "encrypt=true;"
 				+ "trustServerCertificate=false;"
 				+ "hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
-		static final String USERNAME = "root";
-		static final String PASSWORD = "samurai#2016";
+		//static final String USERNAME = "root";
+		//static final String PASSWORD = "samurai#2016";
 		
 	public static void main(String[] args){
 		
@@ -33,11 +33,11 @@ public class jdbc {
 				System.out.println("connection open");
 			}
 			
-			//scrape.getPage();
-			//scrape.parsePage();
+			scrape.getPage();
+			scrape.parsePage();
 
 			//CreateTables();
-			//InsertIntoCourses();
+			InsertIntoCourses();
 			//UpdateCourses();
 
 			//sql = "DELETE FROM Courses WHERE crn = 33985";
@@ -51,7 +51,7 @@ public class jdbc {
 			//sql = "UPDATE Courses SET seatsAvailable = 10 WHERE seatsAvailable = 5";
 			//sql = "DROP TABLE courses;";
 			//stat.executeUpdate(sql);
-			Scanner in  = new Scanner(System.in);
+			/*Scanner in  = new Scanner(System.in);
 			System.out.println("Input CRN in correct format:");
 			String st = in.next();
 			while(!st.equals("-1")){
@@ -64,7 +64,7 @@ public class jdbc {
 				
 			System.out.println("\nInput CRN in correct format.(-1 to Stop.)");	
 			st = in.next();
-			}
+			}*/
 			
 			conn.close();
 			
@@ -258,7 +258,7 @@ public class jdbc {
 				System.out.println(line);
 				
 								//back to courses
-				sql = "INSERT INTO courses VALUES('"+CRN+"',"
+				sql = "INSERT INTO courses(crn,number,title,units,activity,days,time,room,length,instructor,maxEnrl,seatsAvailable,activeEnrl,sem_id) VALUES('"+CRN+"',"
 						+ "'"+NUMBER+"',"
 						+ "'"+TITLE+"',"
 						+ "'"+UNITS+"',"

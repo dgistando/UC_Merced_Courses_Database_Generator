@@ -251,22 +251,26 @@ public class ToDoActivity extends Activity {
         // Create a new item
         final coursess item = new coursess();
 
-        item.setCrn(Integer.parseInt(mTextNewToDo.getText().toString()));
-
+        //item.setCrn(Integer.parseInt(mTextNewToDo.getText().toString()));
+        item.setNumber(mTextNewToDo.getText().toString());
+        List<String> classes;
 
         // Insert the new item
         AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>(){
             @Override
             protected Void doInBackground(Void... params) {
                 try {
-                    final coursess entity = addItemInTable(item);
+                    //final coursess entity = addItemInTable(item);
+                    final List<coursess> classesL = getclasseslist(item.getNumber());
+
+
 
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            //if(!entity.isComplete()){
-                                mAdapter.add(entity);
-                            //}
+                            for(coursess number : classesL){
+                                mAdapter.add(number);
+                            }
                         }
                     });
                 } catch (final Exception e) {
@@ -290,6 +294,11 @@ public class ToDoActivity extends Activity {
     public coursess addItemInTable(coursess item) throws ExecutionException, InterruptedException {
         coursess entity = mcoursesTable.where().field("crn").eq(item.getCrn()).execute().get().get(0);
         return entity;
+    }
+
+    public List<coursess> getclasseslist(String item) throws ExecutionException, InterruptedException {
+        List<coursess> classes = mcoursesTable.where().startsWith("number",item).execute().get();
+        return classes;
     }
 
     /**
